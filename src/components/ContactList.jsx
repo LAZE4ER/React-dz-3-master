@@ -3,11 +3,11 @@ import { AnimatePresence } from "framer-motion";
 const ContactList = ({ contacts }) => {
   return (
     <ul>
-      {contacts.map((contact) => (
-        <AnimatePresence key={contact.id}>
-          <ContactItem contact={contact} />
-        </AnimatePresence>
-      ))}
+      <AnimatePresence>
+        {contacts.map((contact) => (
+          <ContactItem key={contact.id} contact={contact} />
+        ))}
+      </AnimatePresence>
     </ul>
   );
 };

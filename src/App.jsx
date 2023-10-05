@@ -1,36 +1,27 @@
 import { nanoid } from "nanoid";
-import { useState } from "react";
-import {
-  Container,
-  Typography,
-  Paper,
-} from "@mui/material";
+import { useState, useEffect } from "react";
+import { Container, Typography, Paper } from "@mui/material";
 import ContactList from "./components/ContactList";
 import CreateContactForm from "./components/CreateContactForm";
 import FilterContacts from "./components/FilterContacts";
+import {
+  createContactService,
+  getAllContactsService,
+} from "./services/contactServices";
+
 function App() {
-  const [contacts, setContacts] = useState([
-    { id: "id-1", name: "Rosie Simpson", number: "459-12-56" },
-    { id: "id-2", name: "Hermione Kline", number: "443-89-12" },
-    { id: "id-3", name: "Eden Clements", number: "645-17-79" },
-    { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
-  ]);
-
-
+  const [contacts, setContacts] = useState([]);
   const [filter, setFilter] = useState("");
-
   function createContact(name, number) {
-    if (contacts.some((contact) => contact.name===name)) {
-      const fail = 'is already in contacts'
-      alert(name +  " " + fail)
-      return
+    if (contacts.some((contact) => contact.name === name)) {
+      const fail = "is already in contacts";
+      alert(name + " " + fail);
+      return;
     }
-    const newContact = {
-      name: name,
-      id: nanoid(),
-      number: number,
-    };
-    setContacts((prevContacts) => [newContact, ...prevContacts]);
+
+    createContactService(name, number).then((res) => {
+      setContacts((prevContacts) => [res.data, ...prevContacts]);
+    });
   }
   function filterContacts() {
     const filteredContacts = contacts.filter((contact) => {
@@ -38,6 +29,11 @@ function App() {
     });
     return filteredContacts;
   }
+  useEffect(() => {
+    getAllContactsService().then((res) => {
+      setContacts(res.data);
+    });
+  }, []);
   return (
     <Container>
       <Typography variant="h3">Phonebook</Typography>
@@ -51,8 +47,6 @@ function App() {
 
         <ContactList contacts={filterContacts()} />
         <FilterContacts Filter={filter} setFilter={setFilter} />
-
-
       </Paper>
     </Container>
   );

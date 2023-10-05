@@ -6,11 +6,12 @@ const ContactItem = ({ contact }) => {
         height: 0,
       }}
       animate={{
-        height: 40,
+        height: "auto",
       }}
       exit={{
         height: 0,
       }}
+      className="animate"
     >
       <h1 className="text">
         {contact.name}:{contact.number}

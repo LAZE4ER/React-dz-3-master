@@ -2,7 +2,11 @@
 .text {
   font-family: "Rubik";
   list-style-type: none;
+  margin-bottom: 5px;
 }
 .Find {
   font-family: "Rubik";
+}
+.animate {
+  overflow: hidden;
 }
